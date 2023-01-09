@@ -50,6 +50,12 @@ MIDDLEWARE = [
   'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+#add
+MIDDLEWARE_CLASSES = (
+'django.middleware.common.CommonMiddleware',
+'django.contrib.sessions.middleware.SessionMiddleware',
+'django.middleware.csrf.CsrfViewMiddleware',)
+
 ROOT_URLCONF = 'campaignmanagement.urls'
 
 TEMPLATES = [
@@ -122,3 +128,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#add
+# CSRF_COOKIE_SECURE = False
+# CSRF_COOKIE_HTTPONLY = False
+# CSRF_COOKIE_SECURE = True
+# CSRF_COOKIE_HTTPONLY = True
