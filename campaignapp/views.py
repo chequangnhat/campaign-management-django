@@ -26,7 +26,7 @@ class CampaignSchema(Schema):
   user_id = fields.String()
 
 def say_hello(request):
-  return HttpResponse("Hello, world. You're at the polls index.")
+  return JsonResponse({"result" : "Hello, world. You're at the polls index."})
 
 def get_user(request, id):
   try:
@@ -43,22 +43,22 @@ def get_all_campaign(request):
       for campaign_index in range (len(campaigns)):
         new_item = {
           "name": campaigns[campaign_index].name,
-          "start_time": campaigns[campaign_index].start_time,
-          "end_time": campaigns[campaign_index].end_time,
+          "start_time": str(campaigns[campaign_index].start_time),
+          "end_time": str(campaigns[campaign_index].end_time),
           "budget": campaigns[campaign_index].budget,
           "bid_amount": campaigns[campaign_index].bid_amount,
           "title": campaigns[campaign_index].title,
           "description": campaigns[campaign_index].description,
           "banner": campaigns[campaign_index].banner,
           "final_url": campaigns[campaign_index].final_url,
-          "used_amount": campaigns[campaign_index].used_amount,
-          "usage_rate": campaigns[campaign_index].usage_rate,
+          "used_amount": str(campaigns[campaign_index].used_amount),
+          "usage_rate": str(campaigns[campaign_index].usage_rate),
           "user_id": campaigns[campaign_index].user_id_id
         }
         # print("new_item",new_item)
         campaign_dict[campaign_index] = new_item
       # print(campaign_dict)  
-      return JsonResponse({"result":campaign_dict},status=200)
+      return JsonResponse({"result": campaign_dict},status=200)
       
   except Campaign.DoesNotExist:
       return JsonResponse({"result": "campaign does not exist"},status=404)
