@@ -62,6 +62,7 @@ def get_all_campaign(request):
       
   except Campaign.DoesNotExist:
       return JsonResponse({"result": "campaign does not exist"},status=404)
+
 def get_campaign_by_user_id(request, user_id):
   try:
       campaign_dict = {}
@@ -117,3 +118,55 @@ def add_campaign(request):
       return JsonResponse({"status": "error", "message": "user does not exist"}, status= 400)
 
     return JsonResponse({"create status" : "success"})
+
+@csrf_exempt
+def edit_campaign(request, campaign_id):
+  if request.method == "POST":
+    #covert input to json format
+    data = json.loads(request.body)
+
+    fields = [ "name", "start_time", "end_time", "budget", "bid_amount", "title", "description", "banner", "final_url", "used_amount", "usage_rate", "user_id" ]
+    fields.sort()
+    list_keys = list(data.keys())
+    list_keys.sort()
+
+    if fields != list_keys:
+      return JsonResponse({"status": "error", "message": "missing fields"}, status=400)
+
+    try:
+      CampaignSchema().load(data)
+    except ValidationError as err:
+      pprint(err.messages)
+      return JsonResponse({"status": "error validation", "message": err.messages}, status=400)
+
+    try:
+      camp = Campaign.objects.get(id=campaign_id)
+      camp.name = data["name"]
+      camp.start_time = data["start_time"]
+      camp.end_time = data["end_time"]
+      camp.budget = data["budget"]
+      camp.bid_amount = data["bid_amount"]
+      camp.title = data["title"]
+      camp.description = data["description"]
+      camp.banner = data["banner"]
+      camp.final_url = data["final_url"]
+      camp.used_amount = data["used_amount"]
+      camp.usage_rate = data["usage_rate"]
+      camp.save()
+    except Campaign.DoesNotExist:
+      return JsonResponse({"status": "error", "message": "Campaign does not exist"}, status= 400)
+
+    return JsonResponse({"Edit status" : "success"})
+
+@csrf_exempt
+def delete_campaign(request, campaign_id):
+  if request.method == "POST":
+    try:
+      camp = Campaign.objects.get(id=campaign_id)
+      camp.delete()
+    except Campaign.DoesNotExist:
+      return JsonResponse({"status": "error", "message": "Campaign does not exist"}, status= 400)
+
+    return JsonResponse({"Delete status" : "success"})
+
+
