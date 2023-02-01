@@ -55,9 +55,7 @@ def get_all_campaign(request):
           "usage_rate": str(campaigns[campaign_index].usage_rate),
           "user_id": campaigns[campaign_index].user_id_id
         }
-        # print("new_item",new_item)
         campaign_dict[campaign_index] = new_item
-      # print(campaign_dict)  
       return JsonResponse({"result": campaign_dict},status=200)
       
   except Campaign.DoesNotExist:
@@ -82,9 +80,7 @@ def get_campaign_by_user_id(request, user_id):
           "usage_rate": campaigns[campaign_index].usage_rate,
           "user_id": campaigns[campaign_index].user_id_id
         }
-        # print("new_item",new_item)
         campaign_dict[campaign_index] = new_item
-      # print(campaign_dict)  
       return JsonResponse({"result":campaign_dict},status=200)
       
   except Campaign.DoesNotExist:
@@ -93,7 +89,6 @@ def get_campaign_by_user_id(request, user_id):
 @csrf_exempt
 def add_campaign(request):
   if request.method == "POST":
-    #covert input to json format
     data = json.loads(request.body)
 
     fields = [ "name", "start_time", "end_time", "budget", "bid_amount", "title", "description", "banner", "final_url", "used_amount", "usage_rate", "user_id" ]
@@ -168,5 +163,3 @@ def delete_campaign(request, campaign_id):
       return JsonResponse({"status": "error", "message": "Campaign does not exist"}, status= 400)
 
     return JsonResponse({"Delete status" : "success"})
-
-
