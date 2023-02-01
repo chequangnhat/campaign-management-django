@@ -13,7 +13,7 @@ class User(models.Model):
 	updated_at = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
-			return self.id + " - " + self.email
+		return self.id + " - " + self.email
 
 class Campaign(models.Model):
 	id = models.AutoField(primary_key=True)

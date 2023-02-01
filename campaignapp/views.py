@@ -38,66 +38,59 @@ def get_user(request, id):
 
 def get_all_campaign(request):
   try:
-      campaign_dict = {}
+      campaign_list = []
       campaigns = Campaign.objects.all()
-      for campaign_index in range (len(campaigns)):
+      for campaign in campaigns:
         new_item = {
-          "name": campaigns[campaign_index].name,
-          "start_time": str(campaigns[campaign_index].start_time),
-          "end_time": str(campaigns[campaign_index].end_time),
-          "budget": campaigns[campaign_index].budget,
-          "bid_amount": campaigns[campaign_index].bid_amount,
-          "title": campaigns[campaign_index].title,
-          "description": campaigns[campaign_index].description,
-          "banner": campaigns[campaign_index].banner,
-          "final_url": campaigns[campaign_index].final_url,
-          "used_amount": str(campaigns[campaign_index].used_amount),
-          "usage_rate": str(campaigns[campaign_index].usage_rate),
-          "user_id": campaigns[campaign_index].user_id_id
+          "name": campaign.name,
+          "start_time": str(campaign.start_time),
+          "end_time": str(campaign.end_time),
+          "budget": campaign.budget,
+          "bid_amount": campaign.bid_amount,
+          "title": campaign.title,
+          "description": campaign.description,
+          "banner": campaign.banner,
+          "final_url": campaign.final_url,
+          "used_amount": str(campaign.used_amount),
+          "usage_rate": str(campaign.usage_rate),
+          "user_id": campaign.user_id_id
         }
-        campaign_dict[campaign_index] = new_item
-      return JsonResponse({"result": campaign_dict},status=200)
+        # campaign_list[campaign_index] = new_item
+        campaign_list.append(new_item)
+      return JsonResponse({"result": campaign_list},status=200)
       
   except Campaign.DoesNotExist:
       return JsonResponse({"result": "campaign does not exist"},status=404)
 
 def get_campaign_by_user_id(request, user_id):
   try:
-      campaign_dict = {}
+      campaign_list = []
       campaigns = Campaign.objects.filter(user_id_id = user_id)
-      for campaign_index in range (len(campaigns)):
+      for campaign in campaigns:
         new_item = {
-          "name": campaigns[campaign_index].name,
-          "start_time": campaigns[campaign_index].start_time,
-          "end_time": campaigns[campaign_index].end_time,
-          "budget": campaigns[campaign_index].budget,
-          "bid_amount": campaigns[campaign_index].bid_amount,
-          "title": campaigns[campaign_index].title,
-          "description": campaigns[campaign_index].description,
-          "banner": campaigns[campaign_index].banner,
-          "final_url": campaigns[campaign_index].final_url,
-          "used_amount": campaigns[campaign_index].used_amount,
-          "usage_rate": campaigns[campaign_index].usage_rate,
-          "user_id": campaigns[campaign_index].user_id_id
+          "name": campaign.name,
+          "start_time": str(campaign.start_time),
+          "end_time": str(campaign.end_time),
+          "budget": campaign.budget,
+          "bid_amount": campaign.bid_amount,
+          "title": campaign.title,
+          "description": campaign.description,
+          "banner": campaign.banner,
+          "final_url": campaign.final_url,
+          "used_amount": str(campaign.used_amount),
+          "usage_rate": str(campaign.usage_rate),
+          "user_id": campaign.user_id_id
         }
-        campaign_dict[campaign_index] = new_item
-      return JsonResponse({"result":campaign_dict},status=200)
+        # campaign_list[campaign_index] = new_item
+        campaign_list.append(new_item)
+      return JsonResponse({"result": campaign_list},status=200)
       
   except Campaign.DoesNotExist:
       return JsonResponse({"result": "campaign does not exist"},status=404)
-
 @csrf_exempt
 def add_campaign(request):
   if request.method == "POST":
     data = json.loads(request.body)
-
-    fields = [ "name", "start_time", "end_time", "budget", "bid_amount", "title", "description", "banner", "final_url", "used_amount", "usage_rate", "user_id" ]
-    fields.sort()
-    list_keys = list(data.keys())
-    list_keys.sort()
-
-    if fields != list_keys:
-      return JsonResponse({"status": "error", "message": "missing fields"}, status=400)
 
     try:
       CampaignSchema().load(data)
@@ -120,20 +113,12 @@ def edit_campaign(request, campaign_id):
     #covert input to json format
     data = json.loads(request.body)
 
-    fields = [ "name", "start_time", "end_time", "budget", "bid_amount", "title", "description", "banner", "final_url", "used_amount", "usage_rate", "user_id" ]
-    fields.sort()
-    list_keys = list(data.keys())
-    list_keys.sort()
-
-    if fields != list_keys:
-      return JsonResponse({"status": "error", "message": "missing fields"}, status=400)
-
     try:
       CampaignSchema().load(data)
     except ValidationError as err:
       pprint(err.messages)
       return JsonResponse({"status": "error validation", "message": err.messages}, status=400)
-
+    test = "name"
     try:
       camp = Campaign.objects.get(id=campaign_id)
       camp.name = data["name"]
