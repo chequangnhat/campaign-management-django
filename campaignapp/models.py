@@ -8,6 +8,7 @@ class User(models.Model):
 	last_name = models.CharField(max_length=255)
 	address = models.CharField(max_length=255)
 	phone_number = models.CharField(max_length=11)
+	description = models.TextField()
 	deleted = models.BooleanField(default=False)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
