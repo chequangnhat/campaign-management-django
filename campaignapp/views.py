@@ -33,7 +33,7 @@ def get_user(request, id):
       user = User.objects.get(id=id)
   except User.DoesNotExist:
       return JsonResponse({"result": "user does not exist"},status=404)
-  user = User.objects.get(id=id)
+  # user = User.objects.get(id=id)
   return HttpResponse(f"user email is {user.email}")
 
 def get_all_campaign(request):
@@ -97,14 +97,14 @@ def add_campaign(request):
     except ValidationError as err:
       pprint(err.messages)
       return JsonResponse({"status": "error validation", "message": err.messages}, status=400)
-
-    try:
-      user = User.objects.get(id=data["user_id"])
-      camp = Campaign(name = data["name"], start_time = data["start_time"], end_time = data["end_time"], budget = data["budget"], bid_amount = data["bid_amount"], title = data["title"], description = data["description"], banner= data["banner"], final_url= data["final_url"], used_amount = data["used_amount"], usage_rate = data["usage_rate"], user_id = user)
-      camp.save()
-    except User.DoesNotExist:
-      return JsonResponse({"status": "error", "message": "user does not exist"}, status= 400)
-
+    else: 
+      try:
+        user = User.objects.get(id=data["user_id"])
+        camp = Campaign(name = data["name"], start_time = data["start_time"], end_time = data["end_time"], budget = data["budget"], bid_amount = data["bid_amount"], title = data["title"], description = data["description"], banner= data["banner"], final_url= data["final_url"], used_amount = data["used_amount"], usage_rate = data["usage_rate"], user_id = user)
+        camp.save()
+      except User.DoesNotExist:
+        return JsonResponse({"status": "error", "message": "user does not exist"}, status= 400)
+        
     return JsonResponse({"create status" : "success"})
 
 @csrf_exempt
@@ -118,7 +118,6 @@ def edit_campaign(request, campaign_id):
     except ValidationError as err:
       pprint(err.messages)
       return JsonResponse({"status": "error validation", "message": err.messages}, status=400)
-    test = "name"
     try:
       camp = Campaign.objects.get(id=campaign_id)
       camp.name = data["name"]
