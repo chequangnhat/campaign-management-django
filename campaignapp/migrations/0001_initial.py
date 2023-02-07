@@ -35,7 +35,8 @@ class Migration(migrations.Migration):
                 ('token', models.TextField()),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('user_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='campaignapp.user')),
+                ('user_id', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='campaignapp.user')),
             ],
         ),
         migrations.CreateModel(
@@ -52,12 +53,15 @@ class Migration(migrations.Migration):
                 ('description', models.TextField()),
                 ('banner', models.TextField()),
                 ('final_url', models.TextField()),
-                ('used_amount', models.DecimalField(decimal_places=2, max_digits=5)),
-                ('usage_rate', models.DecimalField(decimal_places=2, max_digits=5)),
+                ('used_amount', models.DecimalField(
+                    decimal_places=2, max_digits=5)),
+                ('usage_rate', models.DecimalField(
+                    decimal_places=2, max_digits=5)),
                 ('deleted', models.BooleanField(default=False)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('user_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='campaignapp.user')),
+                ('user_id', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='campaignapp.user')),
             ],
         ),
     ]

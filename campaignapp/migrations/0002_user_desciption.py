@@ -2,17 +2,20 @@
 
 from django.db import migrations, models
 
+
 def add_user_description(apps, scheme_editor):
 
-	User = apps.get_model('campaignapp', 'User')
-	users = User.objects.all()
+    User = apps.get_model('campaignapp', 'User')
+    users = User.objects.all()
 
-	for user in users:
-		user.description = f"{user.first_name} {user.last_name}'s description"
-		user.save()
+    for user in users:
+        user.description = f"{user.first_name} {user.last_name}'s description"
+        user.save()
+
 
 def reverse_user_description(apps, scheme_editor):
-	pass
+    pass
+
 
 class Migration(migrations.Migration):
 
@@ -27,5 +30,6 @@ class Migration(migrations.Migration):
             field=models.TextField(default="desc"),
             preserve_default=False,
         ),
-				migrations.RunPython(add_user_description, reverse_code=reverse_user_description), 
+        migrations.RunPython(add_user_description,
+                             reverse_code=reverse_user_description),
     ]
