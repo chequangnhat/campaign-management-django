@@ -107,8 +107,10 @@ def add_campaign(request):
         else:
             try:
                 user = User.objects.get(id=data["user_id"])
-                camp = Campaign(name=data["name"], start_time=data["start_time"], end_time=data["end_time"], budget=data["budget"], bid_amount=data["bid_amount"], title=data["title"],
-                                description=data["description"], banner=data["banner"], final_url=data["final_url"], used_amount=data["used_amount"], usage_rate=data["usage_rate"], user_id=user)
+                camp = Campaign(name=data["name"], start_time=data["start_time"], end_time=data["end_time"], 
+                                budget=data["budget"], bid_amount=data["bid_amount"], title=data["title"],
+                                description=data["description"], banner=data["banner"], final_url=data["final_url"], 
+                                used_amount=data["used_amount"], usage_rate=data["usage_rate"], user_id=user)
                 camp.save()
             except User.DoesNotExist:
                 return JsonResponse({"status": "error", "message": "user does not exist"}, status=400)
